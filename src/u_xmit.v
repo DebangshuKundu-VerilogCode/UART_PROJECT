@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module u_xmit(input sys_rst,input uart_clk,input xmitH,input [7:0] xmit_dataH,output reg xmit_doneH,output reg xmit_active,output reg uart_xmit_datah
+module u_xmit#(parameter WORD=8)(input sys_rst,input uart_clk,input xmitH,input [WORD-1:0] xmit_dataH,output reg xmit_doneH,output reg xmit_active,output reg uart_xmit_datah
     );
     reg [2:0] ct,nt;
     reg [3:0] count;
@@ -30,7 +30,7 @@ module u_xmit(input sys_rst,input uart_clk,input xmitH,input [7:0] xmit_dataH,ou
     localparam WAIT=2;
     localparam TX=3;
     localparam STOP=4;
-    reg [7:0] data;
+    reg [WORD-1:0] data;
     
     
     always@(posedge uart_clk or negedge sys_rst)
@@ -73,7 +73,7 @@ module u_xmit(input sys_rst,input uart_clk,input xmitH,input [7:0] xmit_dataH,ou
                     if(xmitH==1'b1)begin
                         nt=START;
                         data=xmit_dataH;end
-                    w_count=9;
+                    w_count=WORD+1;
                 end
                 START: begin
                     xmit_doneH=1'b0;
