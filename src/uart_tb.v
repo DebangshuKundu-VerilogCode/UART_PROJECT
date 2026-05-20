@@ -2,7 +2,9 @@
 `include "uart.v"
 `include "uart_ref_model.v"
 module uart_tb;
-
+parameter XTAL=50000000;
+parameter WORD=8;
+parameter BAUD=9600;
 
 reg sys_clk, sys_rst, xmitH;
 reg [7:0] xmit_dataH;
@@ -28,7 +30,7 @@ integer pass_count = 0;
 integer fail_count = 0;
 integer test_count = 0;
 
-uart dut(
+uart #(.XTAL_CLK(XTAL),.WORD_LEN(WORD),.BAUD(BAUD))dut(
     .sys_clk(sys_clk), .sys_rst_1(sys_rst),
     .xmitH(xmitH), .xmit_dataH(xmit_dataH),
     .uart_REC_dataH(uart_rec_datah),
@@ -39,7 +41,7 @@ uart dut(
 );
 assign dut_uart_clk=dut.uart_clk;
 
-uart_ref_model ref(
+uart_ref_model #(.XTAL_CLK(XTAL),.BAUD(BAUD),.WORD_LEN(WORD))ref(
     .sys_clk(sys_clk), .sys_rst(sys_rst),
     .xmitH(xmitH), .xmit_dataH(xmit_dataH),
     .uart_rec_datah(uart_rec_datah),
@@ -312,4 +314,3 @@ initial begin
 end
 
 endmodule
-
