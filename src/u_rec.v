@@ -39,7 +39,7 @@ module u_rec#(parameter WORD=8)(input sys_rst,input uart_clk,input uart_rec_data
                     ct<=IDLE;
                     f_syn<=2'b00;
                     temp<=0;
-                    rec_datah<=8'd0;
+                    rec_datah<={WORD{1'b0}};
                 end
             else 
                 begin
@@ -84,7 +84,7 @@ module u_rec#(parameter WORD=8)(input sys_rst,input uart_clk,input uart_rec_data
                 else 
                     begin   
                         nt=IDLE;
-                        w_count=4'd10;
+                        w_count=WORD+2;
                     end
             end
             WAIT: begin
