@@ -30,7 +30,7 @@ module u_rec#(parameter WORD=8)(input sys_rst,input uart_clk,input uart_rec_data
     reg [1:0] f_syn;
     reg [3:0] count;
     reg [3:0] w_count;
-    reg [2:0] ct,nt;
+    reg [1:0] ct,nt;
     reg [WORD-1:0] temp;
     always@(posedge uart_clk or negedge sys_rst)
         begin
