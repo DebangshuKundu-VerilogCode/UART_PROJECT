@@ -143,7 +143,7 @@ always @(posedge uart_clk) begin
         // After these 8 ticks f_syn[0] has been updated by
         // the synchroniser block, so the read below is valid.
         // --------------------------------------------------
-        repeat (8) @(posedge uart_clk);
+        repeat (5) @(posedge uart_clk);
 
         if (f_syn[0] == 1'b0) begin   // valid start bit
 
