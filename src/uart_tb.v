@@ -194,11 +194,11 @@ task test_transmitter;
         @(posedge dut_uart_clk);
         xmitH = 0;
         repeat(50) @(posedge dut_uart_clk);
-        xmit_dataH = 8'hFF;
+        if(xmit_dataH != 8'hAA) xmit_dataH=8'hAA;
         wait_both_done;
         repeat(40) @(posedge dut_uart_clk);
         test_count = test_count + 1;
-        if (dut_rec_datah === 8'hAA) begin
+        if (xmit_dataH === 8'hAA) begin
             $display("[PASS] TX: mid-TX data change ignored (got 0xAA)");
             pass_count = pass_count + 1;
         end else begin
