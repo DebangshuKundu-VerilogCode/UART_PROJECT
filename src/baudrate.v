@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module baudrate#(parameter xtal=100000000,parameter baud=2400)(input sys_clk,input sys_rst,output reg uart_clk
+module baudrate#(parameter xtal=50000000,parameter baud=9600)(input sys_clk,input sys_rst,output reg uart_clk
 
     );
     
