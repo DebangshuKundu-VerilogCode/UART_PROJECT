@@ -64,27 +64,28 @@ initial begin
 end
 
 always @(posedge xmitH) begin
-    tx_data         = xmit_dataH;
-    xmit_active     = 1'b1;
-    xmit_doneH      = 1'b0;
+    @(posedge uart_clk);
+    tx_data         <= xmit_dataH;
+    xmit_active     <= 1'b1;
+    xmit_doneH      <= 1'b0;
 
     // START bit
-    uart_xmit_datah = 1'b0;
+    uart_xmit_datah <= 1'b0;
     repeat (16) @(posedge uart_clk);
 
     // DATA bits – LSB first
     for (tx_i = 0; tx_i < WORD_LEN; tx_i = tx_i + 1) begin
-        uart_xmit_datah = tx_data[0];
-        tx_data         = tx_data >> 1;
+        uart_xmit_datah <= tx_data[0];
+        tx_data         <= tx_data >> 1;
         repeat (16) @(posedge uart_clk);
     end
 
     // STOP bit
-    uart_xmit_datah = 1'b1;
+    uart_xmit_datah <= 1'b1;
     repeat (16) @(posedge uart_clk);
 
-    xmit_active = 1'b0;
-    xmit_doneH  = 1'b1;
+    xmit_active <= 1'b0;
+    xmit_doneH  <= 1'b1;
 end
 
 // ============================================================
