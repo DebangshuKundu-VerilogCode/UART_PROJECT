@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module u_rec(input sys_rst,input uart_clk,input uart_rec_datah,output reg rec_readyh,output reg rec_busyh,output reg[7:0] rec_datah
+module u_rec#(parameter WORD=8)(input sys_rst,input uart_clk,input uart_rec_datah,output reg rec_readyh,output reg rec_busyh,output reg[WORD-1:0] rec_datah
 
     );
     localparam IDLE=0;
@@ -31,7 +31,7 @@ module u_rec(input sys_rst,input uart_clk,input uart_rec_datah,output reg rec_re
     reg [3:0] count;
     reg [3:0] w_count;
     reg [2:0] ct,nt;
-    reg [7:0] temp;
+    reg [WORD-1:0] temp;
     always@(posedge uart_clk or negedge sys_rst)
         begin
             if(!sys_rst)
@@ -88,7 +88,7 @@ module u_rec(input sys_rst,input uart_clk,input uart_rec_datah,output reg rec_re
                     end
             end
             WAIT: begin
-                if(w_count==4'd10)
+                if(w_count==(WORD+2))
                     begin
                         if(count==4'b0110)
                             begin
@@ -123,7 +123,7 @@ module u_rec(input sys_rst,input uart_clk,input uart_rec_datah,output reg rec_re
                    end
           end
           REC: begin
-            temp={f_syn[0],temp[7:1]};
+              temp={f_syn[0],temp[WORD-1:1]};
             w_count=w_count-1'b1;
             nt=WAIT;
             end
@@ -136,7 +136,7 @@ module u_rec(input sys_rst,input uart_clk,input uart_rec_datah,output reg rec_re
                 end
             else
                 begin
-                rec_datah={8{1'b0}};
+                    rec_datah={WORD{1'b0}};
                     rec_busyh=1'b0;
                     rec_readyh=1'b1;
                     nt=IDLE;
