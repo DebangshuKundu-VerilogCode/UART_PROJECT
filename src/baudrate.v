@@ -26,7 +26,7 @@ module baudrate#(parameter xtal=100000000,parameter baud=2400)(input sys_clk,inp
     
     
    
-    reg [31:0] count;
+    reg [($clog2(xtal/(baud*16*2)))-1:0] count;
     always@(posedge sys_clk or negedge sys_rst) 
         begin
             if(!sys_rst)
